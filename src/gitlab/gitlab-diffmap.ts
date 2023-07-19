@@ -15,9 +15,6 @@ export async function gitlabGetDiffMap(gitlab_url: string, gitlab_token: string,
         for (const diff of diffs) {
             logger.debug(`  Diff file: ${diff.new_path} diff: ${diff.diff}`)
 
-            const path = diff.new_path
-            diffMap.set(path, [])
-
             const diff_text = diff.diff
             if (diff_text.startsWith('@@')) {
                 let changedLines = diff_text.substring(3)
@@ -33,6 +30,7 @@ export async function gitlabGetDiffMap(gitlab_url: string, gitlab_token: string,
                     const lineCount = parseInt(linesAddedString.substring(separatorPosition + 1))
                     const endLine = startLine + lineCount - 1
 
+                    const path = diff.new_path
                     if (!diffMap.has(path)) {
                         diffMap.set(path, [])
                     }
